@@ -1,9 +1,6 @@
 package centralachat.Entity.User;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 @Entity
@@ -12,4 +9,6 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String role;
+    @OneToOne(mappedBy="userRole")
+    private User user;
 }
