@@ -15,5 +15,7 @@ public class User implements Serializable {
     private String email;
     private String phone;
     @OneToOne
+    private Emplacement userEmp;
+    @OneToOne
     private Role userRole;
 }
