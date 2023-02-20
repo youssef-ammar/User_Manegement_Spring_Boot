@@ -12,5 +12,5 @@ public class Departement implements Serializable {
     private Long id;
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="departement")
-    private Set<Emplacement> Emplacements;
+    private Set<Boutique> Boutiques;
 }

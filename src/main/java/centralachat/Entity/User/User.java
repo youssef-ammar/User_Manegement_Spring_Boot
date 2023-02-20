@@ -16,7 +16,7 @@ public class User implements Serializable {
     private String password;
     private String phone;
     @OneToOne
-    private Emplacement userEmp;
+    private Boutique userEmp;
     @OneToOne
     private Role userRole;
 }
