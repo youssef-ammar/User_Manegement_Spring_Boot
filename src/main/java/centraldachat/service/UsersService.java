@@ -2,6 +2,7 @@ package centraldachat.service;
 
 
 //import centraldachat.entity.Roles;
+
 import centraldachat.entity.Users;
 //import centraldachat.repository.RolesRepository;
 import centraldachat.repository.UsersRepository;
@@ -89,16 +90,25 @@ public class UsersService {
             return ResponseEntity.ok(user);
         }
     }
-    private void sendPassMail(Users user) throws MessagingException, UnsupportedEncodingException {
-        String toAddress = user.getEmail();
+
+    public void forgetPass(String token, String newPassword) throws UnsupportedEncodingException, MessagingException {
+        Users user = usersRepository.findByToken(token).get();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        user.setToken(null);
+    }
+
+    public void sendPassMail(String userEmail) throws MessagingException, UnsupportedEncodingException {
+
+        String toAddress = userEmail;
         String fromAddress = "youssef.ammar.tn@gmail.com";
         String senderName = "ALPHA_TEAM";
         String subject = "Your ALPHA_TEAM password";
-        String content = "Hey"+ user.getFirstName()+", did you want to reset your password ?"
+        String content = "Dear Mr/Madame, did you want to reset your password ? "
                 + "Someone (hopefully you) has asked us to reset the password for your<br>"
                 + "account. Please click the button below to do so. If you didn't<br>"
-                +"request this password reset, you can go ahead and ignore this email!"
-                +"<h3><a href=\"[[URL]]\" target=\"_self\">RESET PASSWORD</a></h3>"
+                + "request this password reset, you can go ahead and ignore this email!"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">RESET PASSWORD</a></h3>"
                 + "Thank you,<br>"
                 + "ALPHA_TEAM.";
         MimeMessage message = mailSender.createMimeMessage();
@@ -108,15 +118,19 @@ public class UsersService {
         helper.setTo(toAddress);
         helper.setSubject(subject);
         String token = UUID.randomUUID().toString();
-        String verifyURL = "http://localhost:9090/oauth/resetPassword?token=" + token  ;
+
+        String verifyURL = "http://localhost:9090/oauth/resetPassword?token=" + token;
 
         content = content.replace("[[URL]]", verifyURL);
 
         helper.setText(content, true);
 
+
         mailSender.send(message);
+        usersRepository.findByEmail(userEmail).get().setToken(token);
 
     }
+
     private void sendVerificationEmail(Users user) throws MessagingException, UnsupportedEncodingException {
 
         String toAddress = user.getEmail();
@@ -136,7 +150,7 @@ public class UsersService {
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
-        String verifyURL = "http://localhost:9090/oauth/verify/" + user.getVerificationCode() ;
+        String verifyURL = "http://localhost:9090/oauth/verify/" + user.getVerificationCode();
 
         content = content.replace("[[URL]]", verifyURL);
 
@@ -152,6 +166,7 @@ public class UsersService {
 
         return usersRepository.existsByEmail(email);
     }
+
     public ResponseEntity<Users> verify(String verificationCode) {
         if (verificationCode == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
