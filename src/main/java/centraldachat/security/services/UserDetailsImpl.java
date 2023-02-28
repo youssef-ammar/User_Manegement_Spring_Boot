@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Objects;
 
 public class UserDetailsImpl implements UserDetails {
@@ -12,14 +13,21 @@ public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
 
   private Long id;
+  private String FirstName;
+  private String LastName;
   private String email;
   private String password;
+  private String Mobile;
 
 
-  public UserDetailsImpl(Long id, String email, String password) {
+  public UserDetailsImpl(Long id,String FirstName, String LastName, String email, String password,String Mobile) {
     this.id = id;
+    this.FirstName=FirstName;
+    this.LastName=LastName;
     this.email = email;
     this.password = password;
+    this.Mobile=Mobile;
+
   }
 
 
@@ -30,6 +38,15 @@ public class UserDetailsImpl implements UserDetails {
 
   public String getEmail() {
     return email;
+  }
+  public String getFirstName() {
+    return FirstName;
+  }
+  public String getLastName() {
+    return LastName;
+  }
+  public String getMobile() {
+    return Mobile;
   }
 
   @Override

@@ -6,6 +6,6 @@ import centraldachat.entity.Users;
 public class UserFactory {
   public static UserDetailsImpl build(Users user){
 
-    return new UserDetailsImpl(user.getId(),user.getEmail(), user.getPassword());
+    return new UserDetailsImpl(user.getId(),user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(),user.getMobile());
   }
 }

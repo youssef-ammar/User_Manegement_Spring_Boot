@@ -1,6 +1,7 @@
 package centraldachat.controller;
 
 import centraldachat.dto.UsersDTO;
+
 import centraldachat.entity.Users;
 import centraldachat.payload.response.JwtResponse;
 import centraldachat.security.jwt.JwtUtils;
@@ -14,13 +15,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:3000")
 
@@ -49,6 +49,39 @@ public class UsersController {
     this.usersService = usersService;
   }
 
+  @Autowired
+  UsersService userService ;
+
+  @GetMapping("/oauth/Users")
+  public List<Users> retrieveAllUsers()
+  {
+    return userService.retrieveAllUsers();
+  }
+//  @GetMapping("/oauth/Role/{idUser}")
+//  public Set<Role> retrieveRole(long idUser)
+//  {
+//     return userService.retrieveRole(idUser);
+//  }
+
+  @PostMapping("/oauth/Users")
+  public Users addUser (@RequestBody Users u)
+  {
+    return userService.addUser(u);
+  }
+
+  @PutMapping("/oauth/Users")
+  public Users updateUser (Users e)
+  {
+    return userService.updateUser(e);
+  }
+
+
+  @DeleteMapping("/oauth/Users/{idUser}")
+  public String removeUser(@PathVariable("idUser") Integer idUser)
+  {
+    userService.removeUser(idUser);
+    return "Deleted Successfully";
+  }
 
 
   @PostMapping("/oauth/signin")
@@ -73,7 +106,7 @@ public class UsersController {
   }
 
 
-  @PostMapping("/oauth/process_register")
+  @PostMapping("/oauth/register")
   public ResponseEntity<Object> processRegister(@RequestBody UsersDTO usersDTO) throws UnsupportedEncodingException, MessagingException {
     Users userReq = modelMapper.map(usersDTO, Users.class);
     ResponseEntity<Users> user = usersService.register(userReq);
@@ -93,7 +126,17 @@ public class UsersController {
     System.out.println("test");
   }
 
+  @GetMapping("oauth/verify/{code}")
+  public ResponseEntity<Object> verifyUser(@PathVariable String code) {
+    ResponseEntity<Users> user = usersService.verify(code);
+    if (user.getStatusCodeValue() == 200) {
+      UsersDTO usersDTO = modelMapper.map(user.getBody(), UsersDTO.class);
+      return new ResponseEntity<>(usersDTO, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(NOT_FOUND, HttpStatus.OK);
+    }
 
+  }
 }
 
 

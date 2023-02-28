@@ -3,10 +3,8 @@ package centraldachat.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -22,9 +20,13 @@ public class Users {
 
   private String email;
   private String password;
-//  private String FirstName;
-//  private String LastName;
+  private String FirstName;
+  private String LastName;
+  private String Mobile;
   private String verificationCode;
   private boolean enabled;
+
+//  @ManyToMany(cascade = CascadeType.ALL)
+//  private Set<Roles> roles ;
 
 }
