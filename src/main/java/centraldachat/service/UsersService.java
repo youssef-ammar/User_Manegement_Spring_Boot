@@ -91,11 +91,12 @@ public class UsersService {
         }
     }
 
-    public void forgetPass(String token, String newPassword) throws UnsupportedEncodingException, MessagingException {
-        Users user = usersRepository.findByToken(token).get();
+    public void forgetPassword(String token, String newPassword) throws UnsupportedEncodingException, MessagingException {
+        Users user = usersRepository.findByPasswordToken(token).get();
         String encodedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
-        user.setToken(null);
+        user.setPasswordToken(null);
+//        usersRepository.save(user.get());
     }
 
     public void sendPassMail(String userEmail) throws MessagingException, UnsupportedEncodingException {
@@ -127,7 +128,13 @@ public class UsersService {
 
 
         mailSender.send(message);
-        usersRepository.findByEmail(userEmail).get().setToken(token);
+
+        Optional<Users> user = usersRepository.findByEmail(userEmail);
+
+
+        user.get().setPasswordToken(token);
+        usersRepository.save(user.get());
+
 
     }
 
@@ -182,4 +189,20 @@ public class UsersService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    public void verifyPassToken(String token,String newPassword) {
+
+        Optional<Users> user = usersRepository.findByPasswordToken(token);
+
+
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            user.get().setPassword(encodedPassword);
+
+            usersRepository.save(user.get());
+
+
+
+
+        }
+
+
 }

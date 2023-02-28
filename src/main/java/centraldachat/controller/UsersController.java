@@ -136,19 +136,26 @@ public class UsersController {
 
     @PostMapping("/oauth/forgetPassword")
 
-    public ResponseEntity<Object> forgetPassword(@RequestBody String email) throws UnsupportedEncodingException, MessagingException {
+    public ResponseEntity<Object> forgetPassword(@RequestBody UsersDTO usersDTO) throws UnsupportedEncodingException, MessagingException {
 
-        userService.sendPassMail(email);
+        Users userReq = modelMapper.map(usersDTO, Users.class);
+        userService.sendPassMail(userReq.getEmail());
 
-        return new ResponseEntity<>(NOT_FOUND, HttpStatus.OK);
+        return new ResponseEntity<>(FOUND, HttpStatus.OK);
     }
 
-    @PostMapping("/oauth/resetPassword?token={token}")
+    @PostMapping("/oauth/resetPassword/{token}")
 
-    public ResponseEntity<Object> resetPass(@PathVariable String token, @RequestBody String newPassword) throws UnsupportedEncodingException, MessagingException {
-        userService.forgetPass(token, newPassword);
+    public ResponseEntity<Object> resetPass(@PathVariable String token, @RequestBody UsersDTO usersDTO) {
+        Users userReq = modelMapper.map(usersDTO, Users.class);
+        System.out.println(token+ "  "+ userReq.getPassword());
+        usersService.verifyPassToken(token,userReq.getPassword());
+        return new ResponseEntity<>(FOUND, HttpStatus.OK);
 
-        return new ResponseEntity<>(NOT_FOUND, HttpStatus.OK);
+
+
+
+
     }
 
 }

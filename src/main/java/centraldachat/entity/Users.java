@@ -24,7 +24,7 @@ public class Users {
   private String LastName;
   private String Mobile;
   private String verificationCode;
-  private String Token;
+  private String PasswordToken;
   private boolean enabled;
 
 //  @ManyToMany(cascade = CascadeType.ALL)

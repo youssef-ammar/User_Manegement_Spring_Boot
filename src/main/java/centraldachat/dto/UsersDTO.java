@@ -23,7 +23,7 @@ public class UsersDTO implements Serializable {
   private String LastName;
   private String Mobile;
   private String verificationCode;
-  private String Token;
+  private String PasswordToken;
 //  private Set<Roles> roles;
   private boolean enabled;
 }
