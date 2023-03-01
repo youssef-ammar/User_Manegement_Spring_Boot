@@ -1,6 +1,7 @@
 package centraldachat.security.services;
 
 
+import centraldachat.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,15 +19,17 @@ public class UserDetailsImpl implements UserDetails {
   private String email;
   private String password;
   private String Mobile;
+  private Role role;
 
 
-  public UserDetailsImpl(Long id,String FirstName, String LastName, String email, String password,String Mobile) {
+  public UserDetailsImpl(Long id,String FirstName, String LastName, String email, String password,String Mobile,Role role) {
     this.id = id;
     this.FirstName=FirstName;
     this.LastName=LastName;
     this.email = email;
     this.password = password;
     this.Mobile=Mobile;
+    this.role=role;
 
   }
 
@@ -47,6 +50,9 @@ public class UserDetailsImpl implements UserDetails {
   }
   public String getMobile() {
     return Mobile;
+  }
+  public Role getRole() {
+    return this.role;
   }
 
   @Override

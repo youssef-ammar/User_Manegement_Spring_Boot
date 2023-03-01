@@ -54,6 +54,8 @@ public class UsersController {
 
     @GetMapping("/oauth/Users")
     public List<Users> retrieveAllUsers() {
+
+        System.out.println(userService.test());
         return userService.retrieveAllUsers();
     }
 //  @GetMapping("/oauth/Role/{idUser}")
@@ -117,10 +119,13 @@ public class UsersController {
         }
     }
 
-    @PostMapping("/test")
-    public void test() {
-        System.out.println("test");
-    }
+//    @GetMapping("/aouth/test")
+//
+//    public ResponseEntity<Object> test() {
+//
+//
+//        return new ResponseEntity<>(FOUND, HttpStatus.OK);
+//    }
 
     @GetMapping("oauth/verify/{code}")
     public ResponseEntity<Object> verifyUser(@PathVariable String code) {

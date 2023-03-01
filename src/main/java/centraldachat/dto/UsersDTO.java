@@ -2,6 +2,7 @@ package centraldachat.dto;
 
 
 //import centraldachat.entity.Roles;
+import centraldachat.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class UsersDTO implements Serializable {
   private String Mobile;
   private String verificationCode;
   private String PasswordToken;
+  private Role role;
 //  private Set<Roles> roles;
   private boolean enabled;
 }

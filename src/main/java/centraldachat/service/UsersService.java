@@ -5,6 +5,7 @@ package centraldachat.service;
 
 import centraldachat.entity.Users;
 //import centraldachat.repository.RolesRepository;
+import centraldachat.enums.Role;
 import centraldachat.repository.UsersRepository;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-
 import static centraldachat.enums.Role.ADMIN;
+
 
 @Service
 public class UsersService {
@@ -79,6 +80,7 @@ public class UsersService {
         } else {
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);
+
 
 
             String randomCode = RandomString.make(64);
@@ -203,6 +205,12 @@ public class UsersService {
 
 
         }
+
+      public Role test(){
+          return    usersRepository.findByEmail("admin@admin.com").get().getRole(); /* exemple*/
+
+
+      }
 
 
 }

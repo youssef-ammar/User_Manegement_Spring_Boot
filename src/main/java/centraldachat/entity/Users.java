@@ -1,6 +1,7 @@
 package centraldachat.entity;
 
 
+import centraldachat.enums.Role;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,7 +27,7 @@ public class Users {
   private String verificationCode;
   private String PasswordToken;
   private boolean enabled;
-
+  private Role role;
 //  @ManyToMany(cascade = CascadeType.ALL)
 //  private Set<Roles> roles ;
 
